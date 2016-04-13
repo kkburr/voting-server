@@ -10,18 +10,18 @@ describe('immutability', () => {
     }
 
     it('is immutable', () => {
-      let state = List.of('Trainspotting', '28 Days Later');
+      let state = List.of('Trainspotting', '28DaysLater');
       let nextState = addMovie(state, 'Sunshine');
 
       expect(nextState).to.equal(List.of(
         'Trainspotting',
-        '28 Days Later',
+        '28DaysLater',
         'Sunshine'
       ));
 
       expect(state).to.equal(List.of(
         'Trainspotting',
-        '28 Days Later'
+        '28DaysLater'
       ));
     });
   });
@@ -34,14 +34,14 @@ describe('immutability', () => {
 
     it('is immutable', () => {
       let state = Map({
-        movies: List.of('Trainspotting', '28 Days Later')
+        movies: List.of('Trainspotting', '28DaysLater')
       });
       let nextState = addMovie(state, 'Sunshine');
 
       expect(nextState).to.equal(Map({
         movies: List.of(
           'Trainspotting',
-          '28 Days Later',
+          '28DaysLater',
           'Sunshine'
         )
       }));
@@ -49,7 +49,7 @@ describe('immutability', () => {
       expect(state).to.equal(Map({
         movies: List.of(
           'Trainspotting',
-          '28 Days Later'
+          '28DaysLater'
         )
       }));
     });

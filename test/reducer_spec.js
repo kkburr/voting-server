@@ -16,14 +16,14 @@ describe('reducer', () => {
 
   it('handles NEXT', () => {
     const initialState = fromJS({
-      entries: ['Trainspotting', '28 Days Later']
+      entries: ['Trainspotting', '28DaysLater']
     });
     const action = {type: 'NEXT'};
     const nextState = reducer(initialState, action);
 
     expect(nextState).to.equal(fromJS({
       vote: {
-        pair: ['Trainspotting', '28 Days Later']
+        pair: ['Trainspotting', '28DaysLater']
       },
       entries: []
     }));
@@ -32,7 +32,7 @@ describe('reducer', () => {
   it('handles VOTE', () => {
     const initialState = fromJS({
       vote: {
-        pair: ['Trainspotting', '28 Days Later']
+        pair: ['Trainspotting', '28DaysLater']
       },
       entries: []
     });
@@ -41,7 +41,7 @@ describe('reducer', () => {
 
     expect(nextState).to.equal(fromJS({
       vote: {
-        pair: ['Trainspotting', '28 Days Later'],
+        pair: ['Trainspotting', '28DaysLater'],
         tally: { Trainspotting: 1 }
       },
       entries: []
@@ -60,10 +60,10 @@ describe('reducer', () => {
   it('can be used with reduce', () => {
     // coooooool
     const actions = [
-      {type: 'SET_ENTRIES', entries: ['Trainspotting', '28 Days Later']},
+      {type: 'SET_ENTRIES', entries: ['Trainspotting', '28DaysLater']},
       {type: 'NEXT'},
       {type: 'VOTE', entry: 'Trainspotting' },
-      {type: 'VOTE', entry: '28 Days Later' },
+      {type: 'VOTE', entry: '28DaysLater' },
       {type: 'VOTE', entry: 'Trainspotting' },
       {type: 'NEXT'}
     ];

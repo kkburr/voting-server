@@ -12,11 +12,11 @@ describe('store', () => {
     // where does dispatch come in from?
     store.dispatch({
       type: 'SET_ENTRIES',
-      entries: ['Trainspotting', '28 Days Later']
+      entries: ['Trainspotting', '28DaysLater']
     });
 
     expect(store.getState()).to.equal(fromJS({
-      entries: ['Trainspotting', '28 Days Later']
+      entries: ['Trainspotting', '28DaysLater']
     }));
   });
 });
