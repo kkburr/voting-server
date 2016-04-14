@@ -6,6 +6,10 @@ export function setEntries(state, entries) {
   return state.set('entries', List(entries));
 }
 
+export function setRoutes(state, routes) {
+  return state.set('navigation', routes);
+}
+
 export function next(state) {
   const entries = state.get('entries').concat(getWinners(state.get('vote')));
   if (entries.size === 1) {

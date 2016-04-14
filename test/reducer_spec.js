@@ -1,4 +1,4 @@
-import { Map, fromJS } from 'immutable';
+import { Map, List, fromJS } from 'immutable';
 import { expect } from 'chai';
 
 import reducer from '../src/reducer';
@@ -48,6 +48,27 @@ describe('reducer', () => {
     }));
   });
 
+  it('handles SET_ROUTES', () => {
+    const initialState = fromJS({ entries: ['Trainspotting'] })
+    const action = {
+      type: 'SET_ROUTES',
+      routes: Map({
+                "Vote": "/#/",
+                "Results": "/#/results"
+              })
+    }
+    // why a map?? ^^
+    const nextState = reducer(initialState, action);
+
+    expect(nextState).to.equal(fromJS({
+      entries: ['Trainspotting'],
+      navigation: {
+                    "Vote": "/#/",
+                    "Results": "/#/results"
+                  }
+    }));
+  });
+
   it('has an initial state', () => {
     const action = {type: 'SET_ENTRIES', entries: ['Trainspotting']};
     const nextState = reducer(undefined, action);
@@ -58,7 +79,6 @@ describe('reducer', () => {
   });
 
   it('can be used with reduce', () => {
-    // coooooool
     const actions = [
       {type: 'SET_ENTRIES', entries: ['Trainspotting', '28DaysLater']},
       {type: 'NEXT'},
