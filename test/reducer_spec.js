@@ -38,14 +38,20 @@ describe('reducer', () => {
       },
       entries: []
     });
-    const action = { type: 'VOTE', entry: 'Trainspotting'};
+    const action = {
+      type: 'VOTE',
+      entry: Map({
+              vote: 'Trainspotting',
+              voterId: 1
+            })
+    };
     const nextState = reducer(initialState, action);
 
     expect(nextState).to.equal(fromJS({
       vote: {
         round: 1,
         pair: ['Trainspotting', '28DaysLater'],
-        tally: { Trainspotting: 1 }
+        tally: { "Trainspotting": [ 1 ] }
       },
       entries: []
     }));
@@ -85,9 +91,9 @@ describe('reducer', () => {
     const actions = [
       {type: 'SET_ENTRIES', entries: ['Trainspotting', '28DaysLater']},
       {type: 'NEXT'},
-      {type: 'VOTE', entry: 'Trainspotting' },
-      {type: 'VOTE', entry: '28DaysLater' },
-      {type: 'VOTE', entry: 'Trainspotting' },
+      {type: 'VOTE', entry: Map({ vote: 'Trainspotting', voterId: 4 })},
+      {type: 'VOTE', entry: Map({ vote: '28DaysLater', voterId: 1 }) },
+      {type: 'VOTE', entry: Map({ vote: 'Trainspotting', voterId: 2 }) },
       {type: 'NEXT'}
     ];
     const finalState = actions.reduce(reducer, Map());

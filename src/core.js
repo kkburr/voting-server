@@ -25,16 +25,45 @@ export function next(state) {
   }
 }
 
-export function vote(voteState, entry) {
-  if(voteState.get('pair').includes(entry)){
-    return voteState.updateIn(
-      ['tally', entry],
-      0,
-      tally => tally + 1
-    );
+function updateTallies(voteState, entry, movie) {
+  const voterId = entry['voterId'];
+  const entryName = entry['vote'];
+
+  if (entryName === movie) {
+    const existingTallies = voteState.getIn(['tally', movie]);
+
+    if (existingTallies && !existingTallies.includes(voterId)) {
+      voteState = voteState.updateIn(['tally', movie], [], tallyArray => {
+        const newTallies = tallyArray.push(voterId);
+
+        return newTallies;
+      });
+      return voteState;
+    } else if (!existingTallies) {
+      voteState = voteState.setIn(['tally', movie], List.of(voterId));
+      return voteState;
+    }
+    return voteState;
   } else {
+    voteState = voteState.updateIn(['tally', movie], [], tallyArray => {
+      if (tallyArray.indexOf(voterId) >= 0) {
+        tallyArray = tallyArray.splice(tallyArray.indexOf(voterId), 1);
+      }
+      return tallyArray;
+    });
     return voteState;
   }
+};
+// TODO: clean this up ^^
+
+export function vote(voteState, entry) {
+  const pair = voteState.get('pair');
+  if(pair.includes(entry['vote'])){
+    pair.forEach(movie => {
+      voteState = updateTallies(voteState, entry, movie);
+    })
+  }
+  return voteState;
 }
 
 function getWinners(vote) {

@@ -115,43 +115,49 @@ describe('application logic', () => {
 
   describe('vote', () => {
 
-     it('creates a tally for the voted entry', () => {
-       expect(
-         vote(Map({
+    it('creates a tally for the voted entry', () => {
+      expect(
+        vote(Map({
           round: 1,
-           pair: List.of('Trainspotting', '28 Days Later')
-         }), 'Trainspotting')
-       ).to.equal(
-         Map({
-          round: 1,
-           pair: List.of('Trainspotting', '28 Days Later'),
-           tally: Map({
-             'Trainspotting': 1
+          pair: List.of('Trainspotting', '28 Days Later')
+        }), Map({
+          vote: 'Trainspotting',
+          voterId: 1
+        }))
+      ).to.equal(
+        Map({
+         round: 1,
+         pair: List.of('Trainspotting', '28 Days Later'),
+         tally: Map({
+           'Trainspotting': List.of(1)
           })
         })
       );
     });
 
-     it('adds to existing tally for the voted entry', () => {
-       expect(
-         vote(Map({
+    it('adds to existing tally for the voted entry', () => {
+      expect(
+        vote(Map({
           round: 1,
-           pair: List.of('Trainspotting', '28 Days Later'),
-           tally: Map({
-             'Trainspotting': 3,
-            '28 Days Later': 2
+          pair: List.of('Trainspotting', '28 Days Later'),
+          tally: Map({
+            'Trainspotting': List.of(1, 2, 3),
+            '28 Days Later': List.of(4, 5)
           })
-         }), 'Trainspotting')
-       ).to.equal(
-         Map({
-          round: 1,
-           pair: List.of('Trainspotting', '28 Days Later'),
-           tally: Map({
-             'Trainspotting': 4,
-            '28 Days Later': 2
-          })
+        }), Map({
+          vote: 'Trainspotting',
+          voterId: 4
         })
-      );
+      )).to.equal(
+        Map({
+         round: 1,
+         pair: List.of('Trainspotting', '28 Days Later'),
+         tally: Map({
+           'Trainspotting': List.of(1, 2, 3, 4),
+           '28 Days Later': List.of(5)
+         })
+        })
+      )
     });
 
      it('ignores the vote if for an invalid entry', () => {
@@ -159,15 +165,16 @@ describe('application logic', () => {
          vote(Map({
           round: 1,
            pair: List.of('Trainspotting', '28 Days Later')
-         }), 'Sunshine')
+         }), Map({
+           vote: 'Sunshine',
+           voterId: 4
+         }))
        ).to.equal(
          Map({
           round: 1,
            pair: List.of('Trainspotting', '28 Days Later')
          })
        );
-    });
-
-  });
-
+     });
+   });
 });
