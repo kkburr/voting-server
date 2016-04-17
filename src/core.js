@@ -25,16 +25,31 @@ export function next(state) {
   }
 }
 
-export function vote(voteState, entry) {
+function addVote(voteState, entry, voter) {
   if(voteState.get('pair').includes(entry)){
-    return voteState.updateIn(
-      ['tally', entry],
-      0,
-      tally => tally + 1
-    );
+    return voteState.updateIn(['tally', entry], 0, tally => tally + 1)
+                    .setIn(['votes', voter]);
   } else {
     return voteState;
   }
+}
+
+function removePreviousVote(voteState, voter) {
+  const previousVote = voteState.getIn('votes', voter);
+  if (previousVote) {
+    return voteState.updateIn(['tally', previousVote], tally => tally - 1)
+                    .removeIn(['votes', voter]);
+  } else {
+    return voteState;
+  }
+}
+
+export function vote(voteState, entry, voter) {
+  return addVote(
+    removePreviousVote(voteState, voter),
+    entry,
+    voter
+  )
 }
 
 function getWinners(vote) {
